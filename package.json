@@ -1,0 +1,25 @@
+{
+  "name": "chatbot-interface",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node-dev ./src/index.ts",
+    "build": "if [ -d \"$PWD/build\" ]; then rm -r \"$PWD/build\"; fi && tsc --incremental",
+    "start": "node build/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}
