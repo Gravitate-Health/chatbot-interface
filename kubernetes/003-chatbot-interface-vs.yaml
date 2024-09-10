@@ -1,0 +1,30 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: chatbot-interface
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - gh-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /chatbot/
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        host: chatbot-interface.default.svc.cluster.local
+        port:
+          number: 80
+    corsPolicy:
+      allowMethods:
+      - GET
+      - POST
+      - OPTIONS
+      allowOrigins:
+      - exact: "*"
+      allowHeaders:
+      - "content-type"
+      - "Accept"
