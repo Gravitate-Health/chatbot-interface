@@ -30,10 +30,10 @@ export const chat = async (req: Request, res: Response) => {
         res.status(HttpStatusCode.BadRequest).send({message: "Missing epiIdentifier parameter"})
         return;
     }
-    if (!patientIdentifier || patientIdentifier === "") {
+/*     if (!patientIdentifier || patientIdentifier === "") {
         res.status(HttpStatusCode.BadRequest).send({message: "Missing patientIdentifier parameter"})
         return;
-    }
+    } */
     // Query FHIR for ePI and IPS
     let epi: any, ips: any
     try {
@@ -42,7 +42,7 @@ export const chat = async (req: Request, res: Response) => {
         epi = epi.data["entry"][0]["resource"]
     } catch (error) {
         Logger.logError("chatController.ts", "chat", "Error querying FHIR: " + error)
-        res.status(HttpStatusCode.InternalServerError).send({message: "Error querying FHIR"})
+        res.status(HttpStatusCode.InternalServerError).send({message: "Error querying FHIR: " + error})
         return
     }
 
@@ -51,7 +51,11 @@ export const chat = async (req: Request, res: Response) => {
     // Query chatbot
     let chatbotResponse
     try {
-        chatbotResponse = await chatbotProvider.chat(req.body.question, epi["id"], patientIdentifier)
+        if (patientIdentifier === undefined || patientIdentifier === "") {
+            chatbotResponse = await chatbotProvider.chat(req.body.question, epi["id"])
+        } else {   
+            chatbotResponse = await chatbotProvider.chat(req.body.question, epi["id"], patientIdentifier)
+        }
     } catch (error) {
         Logger.logError("chatController.ts", "chat", "Error querying chatbot: " + error)
         res.status(HttpStatusCode.InternalServerError).send({message: "Error querying chatbot"})

@@ -8,7 +8,7 @@ export class ChatbotProvider extends AxiosController {
         super(baseUrl);
     }
     
-    chat = async (message: string, epiId: string, patientIdentifier: string): Promise<AxiosResponse> => {
+    chat = async (message: string, epiId: string, patientIdentifier?: string): Promise<AxiosResponse> => {
         try {
             let url = `${this.baseUrl}/chat/${epiId}?patientIdentifier=${patientIdentifier}`;
             console.log(url)
