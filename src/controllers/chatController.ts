@@ -3,16 +3,33 @@ import { HttpStatusCode } from "axios";
 import { Logger } from "../utils/Logger";
 import {FhirProvider} from "../providers/fhir.provider";
 import {ChatbotProvider} from "../providers/chatbot.provider";
+import { getK8sServicesByLabel } from "../utils/k8sClient";
+
 import * as dotenv from "dotenv";
 dotenv.config();
 
 const FHIR_IPS_URL = process.env.FHIR_IPS_URL as string;
 const FHIR_EPI_URL = process.env.FHIR_EPI_URL as string;
 const CHATBOT_URL = process.env.CHATBOT_URL as string;
+const CHATBOT_LABEL_SELECTOR = process.env.CHATBOT_LABEL_SELECTOR as string;
 
 let fhirEpiProvider = new FhirProvider(FHIR_EPI_URL);
 //let fhirIpsProvider = new FhirProvider(FHIR_IPS_URL);
-let chatbotProvider = new ChatbotProvider(CHATBOT_URL);
+
+export const listChatbots = async (req: Request, res: Response) => {
+    Logger.logInfo("chatController.ts", "listChatbots", "\n\n\n_____________ LIST CHATBOTS INVOKED ____________")
+
+    try {
+        let chatbotList = await getK8sServicesByLabel(CHATBOT_LABEL_SELECTOR)
+        console.log(chatbotList)
+        res.status(200).send(chatbotList)
+    } catch (error) {
+        Logger.logError("chatController.ts", "listChatbots", "Error querying FHIR: " + error)
+        res.status(HttpStatusCode.InternalServerError).send({message: "Error querying FHIR: " + error})
+    }
+
+}
+
 
 export const chat = async (req: Request, res: Response) => {
     Logger.logInfo("chatController.ts", "chat", "\n\n\n_____________ CHAT INVOKED ____________")
@@ -21,15 +38,23 @@ export const chat = async (req: Request, res: Response) => {
     Logger.logDebug("chatController.ts", "chat", "CHATBOT_URL: " + CHATBOT_URL)
 
     // Get params
-    let epiIdentifier: string, patientIdentifier: string
+    let epiIdentifier: string, patientIdentifier: string, chatbotId: string
     epiIdentifier = req.query.epiIdentifier as string
     patientIdentifier = req.query.patientIdentifier as string
+    chatbotId = req.query.chatbotId as string
 
 
     if (!epiIdentifier || epiIdentifier === "") {
         res.status(HttpStatusCode.BadRequest).send({message: "Missing epiIdentifier parameter"})
         return;
     }
+
+    if (!chatbotId || chatbotId === "") {
+        res.status(HttpStatusCode.BadRequest).send({message: "Missing chatbotId parameter"})
+        return;
+    }
+
+    let chatbotProvider = new ChatbotProvider(`http://${chatbotId}:80`);
 /*     if (!patientIdentifier || patientIdentifier === "") {
         res.status(HttpStatusCode.BadRequest).send({message: "Missing patientIdentifier parameter"})
         return;
