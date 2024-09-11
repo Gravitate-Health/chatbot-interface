@@ -33,6 +33,15 @@ paths:
         - $ref: "#/components/parameters/chatbotId"
         - $ref: "#/components/parameters/epiIdentifier"
         - $ref: "#/components/parameters/patientIdentifier"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question:
+                  type: string
+                  example: "Are there any contraindications in this leaflet for diabetes patients?"
       responses:
         "200":
           description: OK
