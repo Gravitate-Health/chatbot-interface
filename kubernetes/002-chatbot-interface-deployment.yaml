@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         app: chatbot-interface
+        istioRequireAuthentication: "true"
     spec:
       serviceAccountName: focusing-manager-serviceaccount
       containers:
