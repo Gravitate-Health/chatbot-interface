@@ -1,0 +1,79 @@
+openapi: "3.0.1"
+info:
+  title: Gravitate Health Chatbot interface
+  version: MVP3
+  description: Gravitate Health Chatbot interface
+  contact: {}
+servers:
+  - url: https://gravitate-health.lst.tfo.upm.es
+paths:
+  /chatbot/chatbots:
+    get:
+      tags:
+        - Chatbot
+      description: List all available chatbots
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example: ["chat-with-epi", "chatbot-ema", "chatbot-test-fosps", "chatbot3"]
+  /chatbot/chat:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Chatbot
+      description: Ask a question to the chatbot
+      parameters:
+        - $ref: "#/components/parameters/chatbotId"
+        - $ref: "#/components/parameters/epiIdentifier"
+        - $ref: "#/components/parameters/patientIdentifier"
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "Hi! I am a chatbot"
+components:
+  parameters:
+    chatbotId:
+      in: query
+      name: chatbotId
+      description: chatbot id to be used for the query
+      required: true
+      schema:
+        type: string
+        example: chatbot-ema
+    epiIdentifier:
+      in: query
+      name: epiIdentifier
+      description: ePI identifier to use as context
+      required: true
+      schema:
+        type: string
+        example: EU/1/96/007/035
+    patientIdentifier:
+      in: query
+      name: patientIdentifier
+      description: patient identifier to use as context
+      required: false
+      schema:
+        type: string
+        example: alicia-1
+
+  responses:
+    200:
+      description: OK
+      content:
+        text/html:
+          schema:
+            type: string
+            example: "<p>Based on the context provided, there is no explicit mention of the indication of Biktarvy in this document. However, it can be inferred that Biktarvy is used to treat HIV infection, as the text discusses common side effects and precautions associated with taking antiretroviral medications for HIV treatment.</p>"
+    
