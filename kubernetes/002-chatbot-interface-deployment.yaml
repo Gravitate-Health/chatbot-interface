@@ -12,6 +12,7 @@ spec:
       labels:
         app: chatbot-interface
     spec:
+      serviceAccountName: focusing-manager-serviceaccount
       containers:
       - name: chatbot-interface
         image: gravitate-registry.cr.de-fra.ionos.com/chatbot-interface:latest
@@ -21,6 +22,10 @@ spec:
           value: "http://chat-with-epi:80"
         - name: FHIR_EPI_URL
           value: "https://gravitate-health.lst.tfo.upm.es/epi/api/fhir"
+        - name: CHATBOT_LABEL_SELECTOR
+          value: "eu.gravitate-health.fosps.chatbot=true"
+        - name: ENVIRONMENT
+          value: prod
         resources: {}
       restartPolicy: Always
 status: {}
