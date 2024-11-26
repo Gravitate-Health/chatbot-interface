@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - 001-chatbot-interface-service.yaml
+  - 002-chatbot-interface-deployment.yaml
+  - 003-chatbot-interface-vs.yaml
+  - 004-chatbot-interface-authPolicy.yaml

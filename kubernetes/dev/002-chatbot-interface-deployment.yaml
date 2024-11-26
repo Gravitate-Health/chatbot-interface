@@ -8,25 +8,14 @@ spec:
     matchLabels:
       app: chatbot-interface
   template:
-    metadata:
-      labels:
-        app: chatbot-interface
-        istioRequireAuthentication: "true"
     spec:
       serviceAccountName: focusing-manager-serviceaccount
       containers:
       - name: chatbot-interface
         image: gravitate-registry.cr.de-fra.ionos.com/chatbot-interface:latest
-        imagePullPolicy: Always
         env:
-        - name: CHATBOT_URL
-          value: "http://chat-with-epi:80"
         - name: FHIR_EPI_URL
           value: "https://gravitate-health.lst.tfo.upm.es/epi/api/fhir"
-        - name: CHATBOT_LABEL_SELECTOR
-          value: "eu.gravitate-health.fosps.chatbot=true"
         - name: ENVIRONMENT
-          value: prod
+          value: dev
         resources: {}
-      restartPolicy: Always
-status: {}
