@@ -12,7 +12,7 @@ spec:
       serviceAccountName: focusing-manager-serviceaccount
       containers:
       - name: chatbot-interface
-        image: gravitate-registry.cr.de-fra.ionos.com/chatbot-interface:latest
+        image: ghcr.io/gravitate-health/chatbot-interface:latest
         env:
         - name: FHIR_EPI_URL
           value: "https://gravitate-health.lst.tfo.upm.es/epi/api/fhir"
