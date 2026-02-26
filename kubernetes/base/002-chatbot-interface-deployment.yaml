@@ -22,7 +22,7 @@ spec:
         - name: CHATBOT_URL
           value: "http://chat-with-epi:80"
         - name: FHIR_EPI_URL
-          value: "http://fhir-server-epi:8080/api/fhir"
+          value: "http://fhir-server-epi:8080/epi/api/fhir"
         - name: CHATBOT_LABEL_SELECTOR
           value: "eu.gravitate-health.fosps.chatbot=true"
         - name: ENVIRONMENT

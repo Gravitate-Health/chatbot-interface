@@ -15,7 +15,7 @@ spec:
         image: ghcr.io/gravitate-health/chatbot-interface:latest
         env:
         - name: FHIR_EPI_URL
-          value: "http://fhir-server-epi:8080/api/fhir"
+          value: "http://fhir-server-epi:8080/epi/api/fhir"
         - name: ENVIRONMENT
           value: dev
         resources: {}
